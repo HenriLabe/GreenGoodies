@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CustomerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -46,10 +49,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastName = null;
 
     #[ORM\Column]
-    private ?bool $CGUAccepted = null;
-
-    #[ORM\Column]
-    private ?bool $ApiEnabled = null;
+    private ?bool $apiEnabled = null;
 
     public function __construct()
     {
@@ -185,26 +185,14 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isCGUAccepted(): ?bool
-    {
-        return $this->CGUAccepted;
-    }
-
-    public function setCGUAccepted(bool $CGUAccepted): static
-    {
-        $this->CGUAccepted = $CGUAccepted;
-
-        return $this;
-    }
-
     public function isApiEnabled(): ?bool
     {
-        return $this->ApiEnabled;
+        return $this->apiEnabled;
     }
 
-    public function setApiEnabled(bool $ApiEnabled): static
+    public function setApiEnabled(bool $apiEnabled): static
     {
-        $this->ApiEnabled = $ApiEnabled;
+        $this->apiEnabled = $apiEnabled;
 
         return $this;
     }

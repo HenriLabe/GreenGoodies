@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            name: 'productsIfApiEnabledForCustomer',
+        )
+    ]
+)]
 class Product
 {
     #[ORM\Id]
@@ -32,10 +41,10 @@ class Product
     private ?string $unitPrice = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $short_description = null;
+    private ?string $shortDescription = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $whole_description = null;
+    private ?string $wholeDescription = null;
 
     public function __construct()
     {
@@ -109,24 +118,24 @@ class Product
 
     public function getShortDescription(): ?string
     {
-        return $this->short_description;
+        return $this->shortDescription;
     }
 
-    public function setShortDescription(?string $short_description): static
+    public function setShortDescription(?string $shortDescription): static
     {
-        $this->short_description = $short_description;
+        $this->shortDescription = $shortDescription;
 
         return $this;
     }
 
     public function getWholeDescription(): ?string
     {
-        return $this->whole_description;
+        return $this->wholeDescription;
     }
 
-    public function setWholeDescription(?string $whole_description): static
+    public function setWholeDescription(?string $wholeDescription): static
     {
-        $this->whole_description = $whole_description;
+        $this->wholeDescription = $wholeDescription;
 
         return $this;
     }
