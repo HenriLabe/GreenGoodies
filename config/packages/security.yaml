@@ -59,9 +59,9 @@ security:
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api$, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/api,       roles: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/api/products, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/api/products, roles: PUBLIC_ACCESS }
+        - { path: ^/api/products, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
