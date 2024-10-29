@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class ProductCollectionEndpointVoter extends Voter
+final class LoginEndpointVoter extends Voter
 {
     public const VIEW = 'POST_VIEW';
 
@@ -27,7 +27,7 @@ final class ProductCollectionEndpointVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-        if (!(self::VIEW === $attribute && $subject instanceof Product && $user->isApiEnabled())) {
+        if (!(self::VIEW === $attribute && $subject instanceof Customer && $user->isApiEnabled())) {
             throw new AccessDeniedException('Access denied.');
         }
         return true;
