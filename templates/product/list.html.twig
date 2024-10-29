@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits - {{ parent() }}{% endblock %}
+
+{% block header %}
+    <h1>Produits</h1>
+{% endblock %}
+
+{% block body %}
+
+    <div>
+        {% for product in products %}
+            <article>
+                    <h2>{{ product.name }}</h2>
+                    <p><img src="{{ product.picture }}" alt="{{ product.shortDescription }}"/></p>
+                    <p>{{ product.unitPrice }}</p>
+                    <p>{{ product.shortDescription }}</p>
+                <a href="{{ path('app_product', {id: product.id}) }}"></a>
+            </article>
+        {% endfor %}
+
+    </div>
+{% endblock %}

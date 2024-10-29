@@ -30,7 +30,7 @@ class Order
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'orders')]
     private Collection $products;
 
-    #[ORM\OneToOne(mappedBy: 'order_id', cascade: ['persist'])]
+    #[ORM\OneToOne(mappedBy: 'order', cascade: ['persist'])]
     private ?Basket $basket = null;
 
     #[ORM\Column(length: 255)]

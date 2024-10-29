@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail d'un produit - {{ product.name }}{% endblock %}
+
+{% block header %}
+    <h1>Produit</h1>
+{% endblock %}
+
+{% block body %}
+
+    <div>
+        <article>
+            <p><img src="{{ product.picture }}" alt="{{ product.shortDescription }}"/></p>
+            <p>{{ product.name }}</p>
+            <p>{{ product.unitPrice }}</p>
+            <p>{{ product.wholeDescription }}</p>
+        </article>
+        {% if not app.user %}
+            <a href="{{ path('app_customer_login') }}"></a>
+        {% else %}
+            <label>
+                Quantité : <input id="qty" type="number" name="quantity"/>
+            </label>
+            <button id="updateQty" type="button"></button>
+        {% endif %}
+    </div>
+{% endblock %}

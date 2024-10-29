@@ -7,4 +7,14 @@ import './bootstrap.js';
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+document.addEventListener('DOMContentLoaded', () => {
+    let quantityInput = document.querySelector('#qty');
+    let updateQuantityBtn = document.querySelector('#updateQty');
+    if (quantityInput && updateQuantityBtn) {
+        if (0 === parseInt(quantityInput.value)) {
+            updateQuantityBtn.innerText = 'Ajouter au panier';
+        } else {
+            updateQuantityBtn.innerText = 'Mettre à jour';
+        }
+    }
+});
