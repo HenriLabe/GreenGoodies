@@ -5,11 +5,12 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class CustomerController extends AbstractController
 {
-    #[Route('/', name: 'app_root_route')]
+    #[Route('/', name: 'app_root')]
     public function index(): Response
     {
         return $this->redirectToRoute('app_customer_login');

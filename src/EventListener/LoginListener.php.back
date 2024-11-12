@@ -1,0 +1,55 @@
+<?php
+
+namespace App\EventListener;
+
+use App\Entity\Customer;
+use App\Repository\CustomerRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\JsonDecoder;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+
+final readonly class LoginListener
+{
+
+    public function __construct(private CustomerRepository $customerRepository, private UserPasswordHasherInterface $userPasswordHasher)
+    {
+    }
+
+    #[AsEventListener(event: KernelEvents::REQUEST, priority: 2000)]
+    public function onKernelRequest(RequestEvent $event): bool|JsonResponse
+    {
+//        dump($event->getRequest());
+//        dump(json_decode($event->getRequest()->getContent()));
+//        dump($event->getRequest()->getContent());
+//        die;
+//dd($event->getRequest()->getRequestUri());
+        if ('/api/login' === $event->getRequest()->getRequestUri()) {
+            $jsonDecoder = new JsonDecoder();
+
+            $jsonRequestToArray = $jsonDecoder->decode($event->getRequest()->getContent());
+            $email = $jsonRequestToArray['username'];
+            $password = $jsonRequestToArray['password'];
+            /** @var Customer $user */
+            $user = $this->customerRepository->findOneBy(['email' => $email ]) ?? null;
+            $dbPassword = $user->getPassword();
+
+
+
+            dd(['email' => $email, 'password' => $password, 'dbPassword' => $dbPassword, 'newly hashed' => $this->userPasswordHasher->hashPassword($user, $password)]);
+
+            // Vérifiez la propriété qui conditionne l'accès
+            if ($user && !$user->isApiEnabled()) {
+                return new JsonResponse(['Access denied'], Response::HTTP_FORBIDDEN);
+            }
+            dd('tutu');
+        }
+        return true;
+    }
+}

@@ -1,0 +1,96 @@
+<?php
+// src/Controller/LoginController.php
+namespace App\Controller;
+
+use ApiPlatform\Symfony\Routing\IriConverter;
+use App\Entity\Customer;
+use App\Repository\CustomerRepository;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\Token\JWTPostAuthenticationToken;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use PhpParser\JsonDecoder;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\Response;
+
+class LoginController extends AbstractController
+{
+
+
+    public function __construct(private readonly JWTTokenManagerInterface $JWTTokenManager, private readonly UserPasswordHasherInterface $userPasswordHasher)
+    {
+    }
+
+    #[Route('/api/login', name: 'api_login', methods: ['POST'])]
+    public function login(/*#[CurrentUser] $user = null*/Request $request, $customerRepository): Response
+    {
+        $token = 'toto';
+//        return $this->json(['token' => $token]);
+//        dd($user);
+
+        $decoder = new JsonDecoder();
+        $requestContentToArray = $decoder->decode($request->getContent());
+        $username = $requestContentToArray['username'];
+        $password = $requestContentToArray['password'];
+        $user = $customerRepository->findOneBy(['email' => $username]);
+        $hashedPassword = $this->userPasswordHasher->hashPassword($user, $password);
+
+//        if ($error) {
+//            return new JsonResponse(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
+//        }
+// Add this logic to the login method for more detailed responses
+//        dump($error);
+        if (empty($username) || empty($password)) {
+            return new JsonResponse(['error' => 'Username and password are required'], Response::HTTP_BAD_REQUEST);
+        }
+//        dump($username);
+//        dump($user->getEmail());
+//        dump($password);
+//        dump($this->userPasswordHasher->hashPassword($user, $password));
+//        $hashedPassword = $this->userPasswordHasher->hashPassword($user, $password);
+//        dd($user->getPassword());
+// Assume user authentication logic is implemented here...
+        if ($hashedPassword !== $user->getPassword()) {
+            return new JsonResponse(['error' => 'Wrong credentials'], Response::HTTP_UNAUTHORIZED);
+        }
+
+// Check if the account is locked or inactive
+        if (!$user->isApiEnabled()) {
+            return new JsonResponse(['error' => 'Api is not enabled for this account'], Response::HTTP_FORBIDDEN);
+        }
+
+
+        return $this->json([
+            'message' => 'Welcome to your new controller!',
+            'path' => 'src/Controller/ApiLoginController.php',
+            'user' => $user->getUserIdentifier(),
+            'token' => $token,
+        ]);
+    }
+
+
+//    #[Route('/api/login', name: 'app_login', methods: ['POST'])]
+//    public function login(#[CurrentUser] $user = null): Response
+//    {
+//        if (!$user) {
+//            return $this->json(['error' => 'Invalid Credentials'], 401);
+//        }
+//
+//        if (!$user->isApiEnabled())
+//        {
+//            return $this->json([], 403);
+//        }
+//
+//        $token = $this->JWTTokenManager->create($user);
+//
+//        return new JsonResponse(['token' => $token]);
+//
+//    }
+}
+
+
