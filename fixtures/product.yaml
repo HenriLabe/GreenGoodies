@@ -1,0 +1,7 @@
+App\Entity\Product:
+    product_{3..5}:
+        name: <name()>
+        unitPrice: <numberBetween(25.00, 499,99)>
+        shortDescription: <sentence()>
+        wholeDescription: <sentence()>
+        picture: <getPicture()>
