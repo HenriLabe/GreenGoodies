@@ -1,0 +1,25 @@
+App\Entity\Customer:
+    customer0:
+        firstName: 'tutu'
+        lastName: 'titi'
+        email: 'tutu@titi.net'
+        password: <hashPassword('1234')>
+        apiEnabled: true
+    customer1:
+        firstName: 'toto'
+        lastName: 'tata'
+        email: 'toto@tata.net'
+        password: <hashPassword('1234')>
+        apiEnabled: true
+    customer2:
+        firstName: 'abc'
+        lastName: 'def'
+        email: 'abc@def.net'
+        password: <hashPassword('1234')>
+        apiEnabled: false
+    customer3:
+        firstName: 'ghi'
+        lastName: 'jkl'
+        email: 'ghi@jkl.net'
+        password: <hashPassword('1234')>
+        apiEnabled: false
