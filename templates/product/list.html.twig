@@ -1,23 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des produits - {{ parent() }}{% endblock %}
-
-{% block header %}
-    <h1>Produits</h1>
-{% endblock %}
 
 {% block body %}
+    <section class="hero">
+        <div class="welcome-text">
+            <h1>Bienvenue</h1>
+            <p>Découvrez notre univers de produits durables et éthiques pour une consommation responsable. Retrouvez des articles d'hygiène & beauté, des accessoires & boissons et du prêt à porter.</p>
+        </div>
+        <div class="hero-image">
+            <img src="{{ asset('images/hero-image.jpg') }}" alt="Sustainable fashion matters">
+        </div>
+    </section>
 
-    <div>
-        {% for product in products %}
-            <article>
-                    <h2>{{ product.name }}</h2>
-                    <p><img src="{{ product.picture }}" alt="{{ product.shortDescription }}"/></p>
-                    <p>{{ product.unitPrice }}</p>
+    <section class="products">
+        <h2>Nos Produits</h2>
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ product.picture }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
                     <p>{{ product.shortDescription }}</p>
-                <a href="{{ path('app_product', {id: product.id}) }}"></a>
-            </article>
-        {% endfor %}
+                    <p class="price">{{ product.unitPrice }}</p>
+                    <a href="{{ product.picture }}" class="view-product">Voir le produit</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 
-    </div>
+    <section class="conviction">
+        <div class="conviction-text">
+            <h2>Notre Conviction</h2>
+            <p>Chez GreenGoodies, nous croyons en un monde où le commerce peut être synonyme de bien-être pour la planète et ses habitants. Notre mission est de vous proposer une sélection rigoureuse de produits qui allient qualité, durabilité et éthique.</p>
+        </div>
+        <div class="conviction-image">
+            <img src="{{ asset('images/conviction-image.jpg') }}" alt="Conviction image">
+        </div>
+    </section>
+
+    <section class="values">
+        <h2>Nos Valeurs</h2>
+        <ul>
+            <li><strong>Durabilité :</strong> Nous sélectionnons soigneusement des produits qui respectent l'environnement et favorisent la durabilité.</li>
+            <li><strong>Éthique :</strong> Nous nous engageons à travailler avec des partenaires et des fournisseurs qui partagent nos valeurs éthiques.</li>
+            <li><strong>Écologie :</strong> Nous encourageons des pratiques respectueuses de l'écosystème et privilégions les matériaux écologiques.</li>
+        </ul>
+    </section>
+
+
+
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

@@ -19,7 +19,6 @@ class CustomerChecker implements UserCheckerInterface
 
     public function checkPostAuth(UserInterface $user): void
     {
-        dump('toto');
         if (!$user instanceof Customer) {
             return;
         }
