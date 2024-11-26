@@ -2,7 +2,6 @@
 namespace App\DataFixtures\Provider;
 
 use Faker\Provider\Base;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PictureProvider extends Base
 {
@@ -17,6 +16,6 @@ class PictureProvider extends Base
 
     public function getPicture(): string
     {
-            return self::randomElement(static::PICTURE_PROVIDER);
+        return 'images/' . self::randomElement(static::PICTURE_PROVIDER);
     }
 }
